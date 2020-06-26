@@ -28,7 +28,7 @@ public class UserController extends HttpServlet {
 		if("joinForm".equals(action)) {
 			System.out.println("joinForm");
 			
-			WebUtil.forward(request, response, forwardPath+"/joinForm.jsp");
+			WebUtil.forward(request, response, "/WEB-INF/views/user/joinForm.jsp");
 		} else if("join".equals(action)) {
 			System.out.println("join");
 			String id = request.getParameter("id");
@@ -77,22 +77,32 @@ public class UserController extends HttpServlet {
 		} else if("modifyForm".equals(action)) {
 			System.out.println("모디파이도착");
 			
+			HttpSession session = request.getSession();
+			int no = ((UserVo)session.getAttribute("authUser")).getNo();
+			
+			UserDao userDao = new UserDao();
+			UserVo vo = userDao.getUser(no);
+			
+			request.setAttribute("userVo", vo);
+			
 			WebUtil.forward(request, response, forwardPath+"/modifyForm.jsp");
 			
 		} else if("modify".equals(action)) {
 			System.out.println("수정성공");
 			
-			String id = request.getParameter("id");
+			HttpSession session = request.getSession();
+			int no = ((UserVo)session.getAttribute("authUser")).getNo();
+			
 			String password = request.getParameter("password");
 			String name = request.getParameter("name");
 			String gender = request.getParameter("gender");
 			
 			UserDao dao = new UserDao();
-			UserVo authVo = dao.modify(id, password, name, gender);
+			dao.modify(no, password, name, gender);
 			
 			//세션영역에 값을 추가
-			HttpSession session = request.getSession();
-			session.setAttribute("authUser", authVo);
+			UserVo sVo = (UserVo)session.getAttribute("authUser");
+			sVo.setName(name);
 			
 			WebUtil.redirect(response, goMain);
 		}

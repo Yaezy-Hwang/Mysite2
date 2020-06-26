@@ -116,24 +116,24 @@ public class UserDao {
 		return vo;
 	}
 	
-	public UserVo modify(String id, String password, String name, String gender) {
+	public void modify(int no, String password, String name, String gender) {
 		UserVo vo = null;
 		getConnection();
 		
 		try {
 			String query = "";
 			query += " update users ";
-			query += " set password = ?,";
-			query += "     name     = ?,";
+			query += " set name = ?,";
+			query += "     password     = ?,";
 			query += "     gender   = ? ";
-			query += " where id= ? ";
+			query += " where no= ? ";
 			
 			pstmt = conn.prepareStatement(query); 
 			
-			pstmt.setString(1, password);
-			pstmt.setString(2, name);
+			pstmt.setString(1, name);
+			pstmt.setString(2, password);
 			pstmt.setString(3, gender);
-			pstmt.setString(4, id);
+			pstmt.setInt(4, no);
 			
 			pstmt.executeUpdate();
 		
@@ -141,7 +141,45 @@ public class UserDao {
 			System.out.println("error:" + e);
 		}
 		close();
+	}
+	
+	public UserVo getUser(int no) {//로그인한 사용자 정보 가져오기
+		UserVo vo = null;
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " select  no, ";
+			query += "         id, ";
+			query += "         password, ";
+			query += "         name, ";
+			query += "         gender ";
+			query += " from    users";
+			query += " where no = ? ";
+			
+			pstmt = conn.prepareStatement(query); 
+			
+			pstmt.setInt(1, no);
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				int rNo = rs.getInt("no");
+				String id = rs.getString("id");
+				String password = rs.getString("password");
+				String name = rs.getString("name");
+				String gender = rs.getString("gender");
+				
+				vo = new UserVo(rNo, id, password, name, gender);
+			}
+		
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		close();
 		return vo;
 	}
+	
+	
 	
 }
