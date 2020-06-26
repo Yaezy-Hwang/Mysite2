@@ -80,4 +80,68 @@ public class UserDao {
 		close();
 		return count;
 	}
+	
+	public UserVo getUser(String id, String password) {//로그인한 사용자 정보 가져오기
+		UserVo vo = null;
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " select  no, ";
+			query += "         name, ";
+			query += "         gender ";
+			query += " from    users";
+			query += " where id= ? ";
+			query += " and password= ? ";
+			
+			pstmt = conn.prepareStatement(query); 
+			
+			pstmt.setString(1, id);
+			pstmt.setString(2, password);
+			
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				int no = rs.getInt("no");
+				String name = rs.getString("name");
+				String gender = rs.getString("gender");
+				
+				vo = new UserVo(no, id, password, name, gender);
+			}
+		
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		close();
+		return vo;
+	}
+	
+	public UserVo modify(String id, String password, String name, String gender) {
+		UserVo vo = null;
+		getConnection();
+		
+		try {
+			String query = "";
+			query += " update users ";
+			query += " set password = ?,";
+			query += "     name     = ?,";
+			query += "     gender   = ? ";
+			query += " where id= ? ";
+			
+			pstmt = conn.prepareStatement(query); 
+			
+			pstmt.setString(1, password);
+			pstmt.setString(2, name);
+			pstmt.setString(3, gender);
+			pstmt.setString(4, id);
+			
+			pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			System.out.println("error:" + e);
+		}
+		close();
+		return vo;
+	}
+	
 }
