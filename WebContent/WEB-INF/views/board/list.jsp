@@ -61,9 +61,9 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach items="${requestScope.list}" var="vo">
+							<c:forEach items="${requestScope.list}" var="vo" varStatus="status">
 								<tr>
-									<td>${vo.no}</td>
+									<td>${list.size() - status.index}</td>
 									<td class="text-left"><a href="/mysite2/bc?no=${vo.no}&action=read">${vo.title}</a></td>
 									<td>${vo.name}</td>
 									<td>${vo.hit}</td>
