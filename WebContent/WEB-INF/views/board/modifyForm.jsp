@@ -21,13 +21,7 @@
 		<c:import url="/WEB-INF/views/include/nav.jsp"></c:import>
 		<!-- //nav -->
 
-		<div id="aside">
-			<h2>게시판</h2>
-			<ul>
-				<li><a href="">일반게시판</a></li>
-				<li><a href="">댓글게시판</a></li>
-			</ul>
-		</div>
+		<c:import url="/WEB-INF/views/include/asideBoard.jsp"></c:import>
 		<!-- //aside -->
 
 

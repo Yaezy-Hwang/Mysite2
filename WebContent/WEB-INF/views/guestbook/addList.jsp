@@ -20,13 +20,7 @@
 		<c:import url="/WEB-INF/views/include/nav.jsp"></c:import>
 		<!-- //nav -->
 
-		<div id="aside">
-			<h2>방명록</h2>
-			<ul>
-				<li>일반방명록</li>
-				<li>ajax방명록</li>
-			</ul>
-		</div>
+		<c:import url="/WEB-INF/views/include/asideGuestbook.jsp"></c:import>
 		<!-- //aside -->
 
 		<div id="content">
