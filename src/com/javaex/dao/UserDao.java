@@ -117,7 +117,6 @@ public class UserDao {
 	}
 	
 	public void modify(int no, String password, String name, String gender) {
-		UserVo vo = null;
 		getConnection();
 		
 		try {

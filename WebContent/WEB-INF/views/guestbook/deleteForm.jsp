@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
-<%@ page import= "com.javaex.vo.GuestVo" %>    
-
-<%
-	int no = (int)request.getAttribute("no");
-	String result = request.getParameter("result");
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
 <html>
@@ -20,10 +14,10 @@
 <body>
 	<div id="wrap">
 
-		<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/header.jsp"></c:import>
 		<!-- //header -->
 
-		<jsp:include page="/WEB-INF/views/include/nav.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/nav.jsp"></c:import>
 		<!-- //nav -->
 
 		<div id="aside">
@@ -66,14 +60,14 @@
 							<td><a href="/mysite2/gbc?action=list">[방명록으로 돌아가기]</a></td>
 						</tr>
 					</table>
-		
-					<% if("fail".equals(result)){ %>
-							<p>
-								비밀번호를 확인해주세요.
-							</p>
-					 <% } %>
+					
+					<c:if test="${param.result eq 'fail'}">
+						<p>
+							비밀번호를 확인해주세요.
+						</p>
+					 </c:if>
 
-					<input type = "hidden" name = "no" value = <%= no %>>
+					<input type = "hidden" name = "no" value = "${requestScope.no}">
 					<input type = "hidden" name = "action" value = "delete">
 				</form>
 				
@@ -83,7 +77,7 @@
 		<!-- //content  -->
 		<div class="clear"></div>
 		
-		<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
+		<c:import url="/WEB-INF/views/include/footer.jsp"></c:import>
 		<!-- //footer -->
 
 	</div>
