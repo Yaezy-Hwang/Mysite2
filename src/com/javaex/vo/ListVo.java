@@ -2,6 +2,8 @@ package com.javaex.vo;
 
 public class ListVo {
 	
+	private int ro;
+
 	private int no;
 	private String title;
 	private String content;
@@ -13,6 +15,17 @@ public class ListVo {
 	public ListVo() {}
 
 	//list 출력
+	public ListVo(int ro, int no, String title, int hit, String date, int userNo, String name) {
+		this.ro = ro;
+		this.no = no;
+		this.title = title;
+		this.hit = hit;
+		this.date = date;
+		this.userNo = userNo;
+		this.name = name;
+	}
+	
+	//list 검색
 	public ListVo(int no, String title, int hit, String date, int userNo, String name) {
 		this.no = no;
 		this.title = title;
@@ -31,6 +44,10 @@ public class ListVo {
 		this.title = title;
 		this.content = content;
 		this.userNo = userNo;
+	}
+
+	public int getRo() {
+		return ro;
 	}
 
 	public int getNo() {

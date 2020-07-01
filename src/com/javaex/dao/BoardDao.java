@@ -55,27 +55,32 @@ public class BoardDao {
 		}
 	}
 
-	public List<ListVo> select() {
+	public List<ListVo> select(int page) {
 		List<ListVo> lList = new ArrayList<>();
     	getConnect();
     	
 		try {
 			String query = "";
-			query += "SELECT b.no,";
-			query += "       b.title,";
-			query += "       b.hit,";
-			query += "       to_char(b.reg_date,'yy-mm-dd hh24:mi') reg_date,";
-			query += "       b.user_no,";
-			query += "       u.name";
-			query += " FROM board b left outer join users u";
-			query += " ON b.user_no = u.no";
-			query += " order by reg_date desc";
+			query += "SELECT ro, no, title, hit, reg_date, user_no, name ";
+			query += " FROM (SELECT ROWNUM ro, no, title, hit, reg_date, user_no, name ";
+			query += "       FROM (SELECT b.no no, b.title title, b.hit hit, ";
+			query += " 			   to_char(b.reg_date,'yy-mm-dd hh24:mi') reg_date, ";
+			query += " 			   b.user_no user_no, u.name name ";
+			query += " 		 From board b left outer join users u on b.user_no =  u.no ";
+			query += " 		 order by no desc) ";
+			query += " 		 where ROWNUM <= ?) ";
+			query += " where ro >= ? ";
 			
 			pstmt = conn.prepareStatement(query);
+			
+			pstmt.setInt(1, (1+(page-1)*5)+4);
+			pstmt.setInt(2, 1+(page-1)*5);
+			
 			rs = pstmt.executeQuery();
 		    
 		    // 4.결과처리
 		    while(rs.next()) {
+		    	int ro = rs.getInt("ro");
 		    	int no = rs.getInt("no");
 		    	String title = rs.getString("title");
 		    	int hit = rs.getInt("hit");
@@ -84,7 +89,7 @@ public class BoardDao {
 		    	String name = rs.getString("name");
 		    	
 		    	//리스트에 추가
-		    	ListVo vo = new ListVo(no, title, hit, regDate, userNo, name);
+		    	ListVo vo = new ListVo(ro, no, title, hit, regDate, userNo, name);
 		    	lList.add(vo);
 		    }
 	
@@ -226,7 +231,7 @@ public class BoardDao {
 		close();
 	}
 
-	public List<ListVo> search(String keyword){
+	public List<ListVo> select(){
 		List<ListVo> resultList = new ArrayList<>();
     	getConnect();
     	
@@ -240,7 +245,7 @@ public class BoardDao {
 			query += "       u.name";
 			query += " FROM board b left outer join users u";
 			query += " ON b.user_no = u.no";
-			query += " order by reg_date desc";
+			query += " order by no desc";
 			
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
@@ -267,4 +272,27 @@ public class BoardDao {
 		return resultList;
 	}
 	
+	public int count() {
+		getConnect();
+		int no=0;
+		
+		try {
+			String query = "select count(no) no from board ";
+			
+			pstmt = conn.prepareStatement(query);
+			rs = pstmt.executeQuery();
+		    
+		    // 4.결과처리
+		    while(rs.next()) {
+		    	no = rs.getInt("no");
+		    }
+	
+		} catch (SQLException e) {
+		    System.out.println("error:" + e);
+		}
+		
+		close();
+		return no;
+		
+	}
 }

@@ -30,10 +30,21 @@ public class BoardController extends HttpServlet {
 		if ("list".equals(action)){
 			System.out.println("게시판으로 이동");//테스트 메세지
 			
-			List<ListVo> lList = boardDao.select();
+			int page = Integer.parseInt(request.getParameter("page"));
+			
+			List<ListVo> lList = boardDao.select(page);
+			int count = boardDao.count();
+			count = (int)Math.ceil(count/5.0);
+			
+			int[] arr = new int[count];
+			
+			for(int i = 0; i < count; i++) {
+				arr[i] = i+1;
+			}
 			
 			//포워드 리퀘스트에 값 넣기
 			request.setAttribute("list", lList);
+			request.setAttribute("arr", arr);
 			
 			//forword 하는 방법
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");

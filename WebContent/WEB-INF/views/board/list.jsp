@@ -63,7 +63,7 @@
 						<tbody>
 							<c:forEach items="${requestScope.list}" var="vo" varStatus="status">
 								<tr>
-									<td>${list.size() - status.index}</td>
+									<td>${vo.ro}</td>
 									<td class="text-left"><a href="/mysite2/bc?no=${vo.no}&action=read">${vo.title}</a></td>
 									<td>${vo.name}</td>
 									<td>${vo.hit}</td>
@@ -80,17 +80,14 @@
 		
 					<div id="paging">
 						<ul>
-							<li><a href="">◀</a></li>
-							<li class="active"><a href="">1</a></li>
-							<li><a href="">2</a></li>
-							<li><a href="">3</a></li>
-							<li><a href="">4</a></li>
-							<li><a href="">5</a></li>
-							<li><a href="">6</a></li>
-							<li><a href="">7</a></li>
-							<li><a href="">8</a></li>
-							<li><a href="">9</a></li>
-							<li><a href="">10</a></li>
+							<li><a href="/mysite2/bc?action=list&page=1">◀</a></li>
+							<c:forEach items= "${requestScope.arr}" var="page">
+								
+									<li <c:if test="${param.page eq page}"> class="active" </c:if>>
+										<a href="/mysite2/bc?action=list&page=${page}">${page}</a>
+									</li>
+								
+							</c:forEach>
 							<li><a href="">▶</a></li>
 						</ul>
 						
