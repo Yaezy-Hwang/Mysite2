@@ -86,7 +86,7 @@ public class BoardController extends HttpServlet {
 			
 			boardDao.modify(listNo, title, content);
 			
-			WebUtil.redirect(response, "/mysite2/bc?action=list");
+			WebUtil.redirect(response, "/mysite2/bc?action=list&page=1");
 			
 		} else if("writeForm".equals(action)) {
 			System.out.println("글쓰기폼");
@@ -101,7 +101,7 @@ public class BoardController extends HttpServlet {
 			
 			boardDao.write(title, content, userNo);
 			
-			WebUtil.redirect(response, "/mysite2/bc?action=list");
+			WebUtil.redirect(response, "/mysite2/bc?action=list&page=1");
 			
 		} else if("delete".equals(action)) {
 			System.out.println("삭제");
@@ -109,7 +109,7 @@ public class BoardController extends HttpServlet {
 			int listNo = Integer.parseInt(request.getParameter("no"));
 			boardDao.delete(listNo);
 			
-			WebUtil.redirect(response, "/mysite2/bc?action=list");
+			WebUtil.redirect(response, "/mysite2/bc?action=list&page=1");
 			
 		} else if("search".equals(action)) {
 			String keyword = request.getParameter("keyword");
