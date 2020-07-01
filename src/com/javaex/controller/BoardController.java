@@ -33,7 +33,10 @@ public class BoardController extends HttpServlet {
 			int page = Integer.parseInt(request.getParameter("page"));
 			
 			List<ListVo> lList = boardDao.select(page);
+			
 			int count = boardDao.count();
+			request.setAttribute("count", count);
+			
 			count = (int)Math.ceil(count/5.0);
 			
 			int[] arr = new int[count];
@@ -121,6 +124,9 @@ public class BoardController extends HttpServlet {
 				}//if
 				
 	    	}
+			
+			int count = boardDao.count();
+			request.setAttribute("count", count);
 
 				//포워드 리퀘스트에 값 넣기
 			request.setAttribute("list", resultList);

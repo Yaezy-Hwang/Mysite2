@@ -237,21 +237,20 @@ public class BoardDao {
     	
 		try {
 			String query = "";
-			query += "SELECT b.no,";
-			query += "       b.title,";
-			query += "       b.hit,";
-			query += "       to_char(b.reg_date,'yy-mm-dd hh24:mi') reg_date,";
-			query += "       b.user_no,";
-			query += "       u.name";
-			query += " FROM board b left outer join users u";
-			query += " ON b.user_no = u.no";
-			query += " order by no desc";
+			query += "SELECT rownum ro, no, title, hit, reg_date, user_no, name ";
+			query += " FROM (select b.no no, b.title title, b.hit hit, ";
+			query += " 		to_char(b.reg_date,'yy-mm-dd hh24:mi') reg_date, ";
+			query += " 		b.user_no user_no, u.name name ";
+			query += "		from board b left outer join users u on b.user_no =  u.no";
+			query += " 		order by b.no desc) ";
+			query += " order by rownum asc";
 			
 			pstmt = conn.prepareStatement(query);
 			rs = pstmt.executeQuery();
 		    
 		    // 4.결과처리
 		    while(rs.next()) {
+		    	int ro = rs.getInt("ro");
 		    	int no = rs.getInt("no");
 		    	String title = rs.getString("title");
 		    	int hit = rs.getInt("hit");
@@ -260,7 +259,7 @@ public class BoardDao {
 		    	String name = rs.getString("name");
 		    	
 		    	//리스트에 추가
-		    	ListVo vo = new ListVo(no, title, hit, regDate, userNo, name);
+		    	ListVo vo = new ListVo(ro, no, title, hit, regDate, userNo, name);
 		    	resultList.add(vo);
 		    }
 	

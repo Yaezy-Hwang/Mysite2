@@ -25,16 +25,6 @@ public class ListVo {
 		this.name = name;
 	}
 	
-	//list 검색
-	public ListVo(int no, String title, int hit, String date, int userNo, String name) {
-		this.no = no;
-		this.title = title;
-		this.hit = hit;
-		this.date = date;
-		this.userNo = userNo;
-		this.name = name;
-	}
-	
 	//read
 	public ListVo(int no, String name, int hit, String date, String title, String content, int userNo) {
 		this.no = no;

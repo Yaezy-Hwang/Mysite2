@@ -63,7 +63,7 @@
 						<tbody>
 							<c:forEach items="${requestScope.list}" var="vo" varStatus="status">
 								<tr>
-									<td>${vo.ro}</td>
+									<td>${requestScope.count - (vo.ro-1)}</td>
 									<td class="text-left"><a href="/mysite2/bc?no=${vo.no}&action=read">${vo.title}</a></td>
 									<td>${vo.name}</td>
 									<td>${vo.hit}</td>
