@@ -1,7 +1,6 @@
 package com.javaex.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -34,7 +33,7 @@ public class BoardController extends HttpServlet {
 			
 			List<ListVo> lList = boardDao.select(page);
 			
-			int count = boardDao.count();
+			int count = boardDao.count("");
 			request.setAttribute("count", count);
 			
 			count = (int)Math.ceil(count/5.0);
@@ -57,7 +56,6 @@ public class BoardController extends HttpServlet {
 			
 			no = Integer.parseInt(request.getParameter("no"));
 			
-			boardDao.hitUp(no);
 			ListVo readVo = boardDao.read(no);
 			
 			//리퀘스트에 게시글 정보 넣기
@@ -114,30 +112,19 @@ public class BoardController extends HttpServlet {
 		} else if("search".equals(action)) {
 			String keyword = request.getParameter("keyword");
 			//전체 리스트 가져오기
-			List<ListVo> lList = boardDao.select();
+			List<ListVo> lList = boardDao.select(keyword);
 			//결과 담을 리스트
-			List<ListVo> resultList = new ArrayList<>();
 			
-			for(ListVo vo: lList) {
-				if(vo.getTitle().contains(keyword)){
-					resultList.add(vo);
-				}//if
-				
-	    	}
-			
-			int count = boardDao.count();
+			int count = boardDao.count(keyword);
 			request.setAttribute("count", count);
 
 				//포워드 리퀘스트에 값 넣기
-			request.setAttribute("list", resultList);
+			request.setAttribute("list", lList);
 			
 			//forword 하는 방법
 			WebUtil.forward(request, response, "/WEB-INF/views/board/list.jsp");
 			
-			
 		}
-		
-		
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

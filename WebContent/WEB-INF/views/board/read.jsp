@@ -75,7 +75,7 @@
 						<c:if test="${sessionScope.authUser.no eq requestScope.readvo.userNo}">
 							<a id="btn_modify" href="/mysite2/bc?no=${requestScope.readvo.no}&action=modifyForm">수정</a>
 						</c:if>
-						<a id="btn_modify" href="/mysite2/bc?action=list">목록</a>
+						<a id="btn_modify" href="/mysite2/bc?action=list&page=1">목록</a>
 						
 					</form>
 	                <!-- //form -->
